@@ -4,7 +4,7 @@
 <img src="https://i.imgur.com/UrVRTXq.png" alt="Simple Discord interface lookin' lit">
 <img src="https://i.imgur.com/PYG9tPF.png" alt="Simple Discord interface lookin' lit">
 
-## 💯 Make discord bots without writing any code, fr fr!
+## 💯 Make discord bots without writing any code!
 
 **Simple Discord** lets you create your own Discord bots with zero coding skills needed! No cap! 🔥
 
@@ -39,12 +39,6 @@ Customize these settings through the web interface:
 - Run JavaScript code
 - Plus way more features!
 
-### 📱 Support & Connection
-
-Got questions? Need help? Wanna vibe with the community?
-Join our Discord server: https://discord.gg/4Xpwwz6pgN
-
 ---
 
-**Note**: Made by kubi. Version 1.0.1 - Settings protection upgraded! 
-According to the source code, this tool was developed by kubilay.
+## Developed by kubi ❤️
