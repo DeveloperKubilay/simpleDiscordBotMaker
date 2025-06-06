@@ -1,7 +1,8 @@
 # 🤖 Simple Discord Bot Maker
 
 ## 📸 Preview
-<img src="https://i.imgur.com/Wcz6xBM.png" alt="Simple Discord interface lookin' lit">
+<img src="https://i.imgur.com/UrVRTXq.png" alt="Simple Discord interface lookin' lit">
+<img src="https://i.imgur.com/PYG9tPF.png" alt="Simple Discord interface lookin' lit">
 
 ## 💯 Make discord bots without writing any code, fr fr!
 
