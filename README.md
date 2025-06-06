@@ -41,4 +41,4 @@ Customize these settings through the web interface:
 
 ---
 
-## Developed by kubi ❤️
+## Made with ❤️ by DeveloperKubilay
