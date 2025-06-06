@@ -1,121 +1,290 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SimpleDiscord</title>
-    <link rel="stylesheet" href="style.css">
+    <script src="<%=icons%>" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/modern.css">
     <link rel="icon" href="/icons/websiteload.png" type="image/x-icon" />
 </head>
 <body>
+    <header class="header">
+        <a href="/" class="logo">SimpleDiscord</a>
+        <div class="header-right">
+            <a href="/dashboard" class="button"><i class="fa-solid fa-gauge-high"></i>Control Panel</a>
+        </div>
+    </header>
+    
     <div class="wrapper">
+        <div class="hero">
+            <h1>Welcome to SimpleDiscord</h1>
+            <p class="subtitle">Developed by kubilay</p>
+        </div>
+        
+        <h2><i class="fa-solid fa-chart-line"></i> Bot Statistics</h2>
+        
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                <div class="stat-value"><%= üye %></div>
+                <div class="stat-label">Users</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-tv"></i></div>
+                <div class="stat-value"><%= kanal %></div>
+                <div class="stat-label">Channels</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-server"></i></div>
+                <div class="stat-value"><%= sunucu %></div>
+                <div class="stat-label">Servers</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <% if(ping <= 50) { %>
+                        <i class="fa-solid fa-bolt text-success"></i>
+                    <% } else if(ping <= 200) { %>
+                        <i class="fa-solid fa-bolt text-warning"></i>
+                    <% } else { %>
+                        <i class="fa-solid fa-bolt text-danger"></i>
+                    <% } %>
+                </div>
+                <div class="stat-value"><%= ping || 0 %> ms</div>
+                <div class="stat-label">Ping</div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3>System Resources</h3>
+                <div class="system-status">
+                    <% if(total <= 50) { %>
+                        <span class="badge bg-success">Healthy</span>
+                    <% } else if(total <= 80) { %>
+                        <span class="badge bg-warning">Moderate Load</span>
+                    <% } else { %>
+                        <span class="badge bg-danger">Heavy Load</span>
+                    <% } %>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>RAM Usage</span>
+                        <span><%= ram %>%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar 
+                            <% if(ram <= 50) { %>bg-success<% } 
+                            else if(ram <= 80) { %>bg-warning<% }
+                            else { %>bg-danger<% } %>" 
+                            style="width: <%= ram %>%">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="progress-container mt-2">
+                    <div class="progress-label">
+                        <span>CPU Usage</span>
+                        <span><%= cpu %>%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar 
+                            <% if(cpu <= 50) { %>bg-success<% } 
+                            else if(cpu <= 80) { %>bg-warning<% }
+                            else { %>bg-danger<% } %>" 
+                            style="width: <%= cpu %>%">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="uptime mt-2">
+                    <i class="fa-solid fa-clock"></i> Uptime: <span><%= uptime %></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <button onclick="location.href='/'" class="button"><i class="fa-solid fa-arrows-rotate"></i><span class="btn-text">Refresh</span></button>
+            <button onclick="window.open('<%= botinvite%>')" class="button button-success"><i class="fa-solid fa-arrow-right-from-bracket"></i><span class="btn-text">Invite Bot</span></button>
+            <button onclick="window.open('https://github.com/DeveloperKubilay/simpleDiscordBotMaker')" class="button"><i class="fa-brands fa-github"></i><span class="btn-text">GitHub</span></button>
+        </div>
     </div>
-<div class="header">
-  <a href="/" class="logo">Dangerio Studio</a>
-  <div class="header-right">
-    <a href="/dashboard">Yönetim Paneli</a>
-  </div>
-</div>
-<div style="padding-left:20px">
-  <h1>Botun İstatistikleri</h1>
-  <p><i class="fa-solid fa-users"></i> Kullanıcı sayısı: <%= üye %></p>
-  <p><i class="fa-solid fa-tv"></i> Kanal sayısı: <%= kanal %></p>
-  <p><i class="fa-solid fa-server"></i> Sunucu sayısı: <%= sunucu %></p>
-  <br>
-  <h1>Site İstatistikleri</h1>
-<i class="fa-solid fa-explosion"></i><% if(total <= 20) { %><a>Sistem %<%= total %> </a><i class="fa-solid fa-battery-empty"></i><% } %>
-<% if(total > 20 && total <= 40) { %><a>Sistem %<%= total %> </a><i class="fa-solid fa-battery-quarter"></i><% } %>
-<% if(total > 40 && total <= 60) { %><a>Sistem %<%= total %> </a><i class="fa-solid fa-battery-half"></i><% } %>
-<% if(total > 60 && total <= 80) { %><a>Sistem %<%= total %> </a><i class="fa-solid fa-battery-three-quarters"></i><% } %>
-<% if(total > 80 && total > 99) { %><a>Sistem %<%= total %> </a><i class="fa-solid fa-battery-full"></i><% } %>
-<p><i class="fa-solid fa-tower-broadcast"></i> Ping: <%= ping || 0 %>ms <% if(ping <= 50) { %><i class="fa-solid fa-check"></i><% } %></p>
-<p><i class="fa-solid fa-clock"></i> Uptime: <%= uptime %></p>
-<p><i class="fa-solid fa-memory"></i> Ram: %<%= ram %> <% if(ram <= 85) { %><i class="fa-solid fa-check"></i><% }else{ %> <i class="fa-solid fa-fire-flame-curved"></i> <% } %></p>
-  <p><i class="fa-solid fa-microchip"></i> Cpu: %<%= cpu %> <% if(cpu <= 85) { %><i class="fa-solid fa-check"></i><% }else{ %> <i class="fa-solid fa-fire-flame-curved"></i> <% } %></p>
-</div>
-<br>
-<div class="buttons">
-<button onclick="location.href='/'" class="button" style="background-color: #000000;"><i class="fa-solid fa-arrows-rotate"></i><a style="color:#ffffff;"> Yenile</a></button>
-<button onclick="window.open('<%= botinvite%>')" class="button" style=" background-color: #2b2b2b;"><i class="fa-solid fa-arrow-right-from-bracket"></i><a style="color:#ffffff;"> İnvite</a></button>
-<button onclick="window.open('https://discord.gg/4Xpwwz6pgN')" class="button" style=" background-color: #3a3738;"><a>Discord</a></button>
-</div>
-
-<script src="<%=icons%>" crossorigin="anonymous"></script>
-<style>
-    * {box-sizing: border-box;}
-
-    body { 
-      height: 100vh;
-      cursor: url('icons/cursor.png'), auto;
-      background: #181414;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-   
-    .header {
-      overflow: hidden;
-      background-color: #282424;
-      padding: 20px 10px;
-    }
     
-    .header a {
-      float: left;
-      color: #ddd;
+    <style>
+        * {box-sizing: border-box;}
+
+        body { 
+          height: 100vh;
+          cursor: url('icons/cursor.png'), auto;
+          background: #181414;
+          font-family: 'Inter', Arial, Helvetica, sans-serif;
+        }
+
+       
+        .header {
+          overflow: hidden;
+          background-color: #282424;
+          padding: 20px 10px;
+        }
+        
+        .header a {
+          float: left;
+          color: #ddd;
+          text-align: center;
+          padding: 12px;
+          text-decoration: none;
+          font-size: 18px; 
+          line-height: 25px;
+          border-radius: 4px;
+        }
+        
+        .header a.logo {
+          font-size: 25px;
+          font-weight: bold;
+        }
+      .buttons .button{
+      border: none;
+      color: white;
+      padding: 15px 32px;
       text-align: center;
-      padding: 12px;
       text-decoration: none;
-      font-size: 18px; 
-      line-height: 25px;
-      border-radius: 4px;
-    }
-    
-    .header a.logo {
-      font-size: 25px;
-      font-weight: bold;
-    }
-  .buttons .button{
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 12%;
-  }
-    h1{
-    color: #ddd;
-    }
-    h2{
-    color: #ddd;
-    }
-    h3{
-    color: #ddd;
-    }
-    h4{
-    color: #ddd;
-    }
-    a{
-    color: #ddd;
-    }
-    p{
-    color: #ddd;
-    }
-    i{
-    color: #ddd;
-    }
-    .header a:hover {
-      background-color: #ddd;
-      color: black;
-    }
-    
-    .header-right {
-      float: right;
-    }
-    
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 12%;
+      }
+        h1{
+        color: #ddd;
+        }
+        h2{
+        color: #ddd;
+        }
+        h3{
+        color: #ddd;
+        }
+        h4{
+        color: #ddd;
+        }
+        a{
+        color: #ddd;
+        }
+        p{
+        color: #ddd;
+        }
+        i{
+        color: #ddd;
+        }
+        .header a:hover {
+          background-color: #ddd;
+          color: black;
+        }
+        
+        .header-right {
+          float: right;
+        }
+        
+        .hero {
+            text-align: center;
+            margin: 50px 0;
+            animation: fadeIn 1s ease;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            color: var(--text-heading);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .progress-container {
+            margin-bottom: 20px;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .progress {
+            height: 8px;
+            background-color: var(--background-tertiary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.6s ease;
+        }
+        
+        .uptime {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+        
+        .uptime i {
+            color: var(--primary);
+            margin-right: 8px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        /* Button icon spacing fix */
+        .btn-text {
+            margin-left: 8px;
+        }
+        
+        /* Ensure the icon is properly aligned */
+        .button i {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
     </style>
 </body>
 </html>

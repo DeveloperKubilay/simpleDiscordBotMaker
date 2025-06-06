@@ -1,245 +1,202 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SimpleDiscord - Ayarlar</title>
-    <link rel="stylesheet" href="style.css">
+    <title>SimpleDiscord - Settings</title>
+    <script src="<%=icons%>" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/modern.css">
     <link rel="icon" href="/icons/websiteload.png" type="image/x-icon" />
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "260px";
+            // Show the overlay when menu opens
+            document.getElementById("menuOverlay").style.display = "block";
+        }
+        
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            // Hide the overlay when menu closes
+            document.getElementById("menuOverlay").style.display = "none";
+        }
+    </script>
 </head>
 <body>
-    <div class="wrapper">
+    <header class="header">
+        <button class="menu-toggle" onclick="openNav()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <a href="/" class="logo">SimpleDiscord</a>
+    </header>
+    
+    <!-- Add a div for the menu overlay -->
+    <div id="menuOverlay" class="menu-overlay" onclick="closeNav()"></div>
+    
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="/dashboard"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="/komutekle"><i class="fa-solid fa-file-code"></i> Add Command</a>
+        <a href="/komutlar"><i class="fa-solid fa-file-lines"></i> Commands</a>
+        <a href="/ayarlar" class="active"><i class="fa-solid fa-gears"></i> Settings</a>
+        <a href="/out"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
     </div>
-<div class="header">
-    <a href="/" class="logo">Dangerio Studio</a>
-    <span style="color: white; font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menü</span>
-</div>
-        <body>
-        
-        <div id="mySidenav" class="sidenav">
-          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-          <a href="/dashboard"><i class="fa-solid fa-house"></i> Ana sayfa</a>
-          <a href="/komutekle"><i class="fa-solid fa-file-code"></i> Komut ekle</a>
-          <a href="/komutlar"><i class="fa-solid fa-file-lines"></i> Komutlar</a>
-          <a href="/ayarlar"><i class="fa-solid fa-gears"></i> Ayarlar</a>
-          <a href="/out"><i class="fa-solid fa-right-from-bracket"></i> Çıkış yap</a>
-        </div>  
-        
-        <form action="/ayarlarupdate" method="post"><div class="buttons">
-          <a><i class="fa-solid fa-asterisk"></i> Token </a><input style="width: 25%;" type="text" id="fname" name="token" placeholder="<%= settings.token.slice(0,20) %>**************************************************"><br>
-          <a><i class="fa-solid fa-asterisk"></i> (2ad) Site Token </a><input style="width: 15%;" type="text" id="fname" name="websitetoken" placeholder="<%= settings.websitetoken.slice(0,12) %>********************"><br>
-          <a><i class="fa-solid fa-robot"></i> Botun id'si </a><input style="width: 10%;" type="text" id="fname" name="id" placeholder="<%= settings.id %>"><br>
-          <a><i class="fa-solid fa-crown"></i> Botun sahibinin id'si </a><input style="width: 10%;" type="text" id="fname" name="ownerid" placeholder="<%= settings.ownerid %>"><br>
-          <a><i class="fa-brands fa-autoprefixer"></i> Prefix </a><input style="width: 4%;" type="text" id="fname" name="prefix" placeholder="<%= settings.prefix %>"><br>
-<br><br><input type="submit" class="button" style="background-color: #000000;" value="Güncelle"></div></form>
-<script src="<%=icons%>" crossorigin="anonymous"></script>
-<script>
-  function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
-  }
-  
-  function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-  }
-
-  </script>
-<style>
-    * {box-sizing: border-box;}
-
-    body { 
-      height: 100vh;
-      cursor: url('icons/cursor.png'), auto;
-      background: #181414;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    input[type=text], select {
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-sizing: border-box;
-}
-.container {
-  display: block;
-  position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  font-size: 22px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
-
-.checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 25px;
-  width: 25px;
-  background-color: #eee;
-}
-
-.container:hover input ~ .checkmark {
-  background-color: #ccc;
-}
-
-.container input:checked ~ .checkmark {
-  background-color: #2196F3;
-}
-
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
-
-.container input:checked ~ .checkmark:after {
-  display: block;
-}
-
-.container .checkmark:after {
-  left: 9px;
-  top: 5px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-
-   .center {
-    font-size:25px;
-    text-align: center;
-    border-radius:15px;
-    border: 3px solid rgb(56, 57, 56);
-   }
-
-   .border {
-    border: 3px solid rgb(56, 57, 56);
-   }
-    .header {
-      overflow: hidden;
-      background-color: #282424;
-      padding: 20px 10px;
-    }
     
-    .header a {
-      float: left;
-      color: #ddd;
-      text-align: center;
-      padding: 12px;
-      text-decoration: none;
-      font-size: 18px; 
-      line-height: 25px;
-      border-radius: 4px;
-    }
+    <div class="wrapper">
+        <div class="page-header">
+            <h1><i class="fa-solid fa-gears"></i> Configuration Settings</h1>
+        </div>
+        
+        <form action="/ayarlarupdate" method="post">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-robot"></i> Bot Configuration</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>
+                            <i class="fa-solid fa-asterisk"></i> 
+                            Bot Token
+                        </label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-key"></i>
+                            <input 
+                                type="password" 
+                                name="token" 
+                                placeholder="<%= settings.token.slice(0,20) %>**************************************************"
+                            >
+                        </div>
+                        <small class="text-muted">Your Discord bot token from the Discord Developer Portal</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <i class="fa-solid fa-id-card"></i> 
+                            Bot ID
+                        </label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-fingerprint"></i>
+                            <input 
+                                type="text" 
+                                name="id" 
+                                placeholder="<%= settings.id %>"
+                            >
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <i class="fa-brands fa-autoprefixer"></i> 
+                            Command Prefix
+                        </label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-terminal"></i>
+                            <input 
+                                type="text" 
+                                name="prefix" 
+                                placeholder="<%= settings.prefix %>"
+                                style="max-width: 120px;"
+                            >
+                        </div>
+                        <small class="text-muted">Character(s) that will precede commands (e.g., !, ., ?)</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-lock"></i> Security Settings</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>
+                            <i class="fa-solid fa-crown"></i> 
+                            Bot Owner ID
+                        </label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-user-shield"></i>
+                            <input 
+                                type="text" 
+                                name="ownerid" 
+                                placeholder="<%= settings.ownerid %>"
+                            >
+                        </div>
+                        <small class="text-muted">Your Discord user ID to secure the admin panel</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <i class="fa-solid fa-asterisk"></i> 
+                            (2ad) Site Token
+                        </label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-key"></i>
+                            <input 
+                                type="password" 
+                                name="websitetoken" 
+                                placeholder="<%= settings.websitetoken.slice(0,12) %>********************"
+                            >
+                        </div>
+                        <small class="text-muted">Used for OAuth2 authentication with Discord</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="button" onclick="location.href='/dashboard'">Cancel</button>
+                <button type="submit" class="button button-success">
+                    <i class="fa-solid fa-save"></i> Save Settings
+                </button>
+            </div>
+        </form>
+    </div>
     
-    .header a.logo {
-        float: right;
-      font-size: 25px;
-      font-weight: bold;
-    }
-  .buttons .button{
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 12%;
-  }
-    h1{
-    color: #ddd;
-    }
-    h2{
-    color: #ddd;
-    }
-    h3{
-    color: #ddd;
-    }
-    h4{
-    color: #ddd;
-    }
-    a{
-    color: #ddd;
-    }
-    p{
-    color: #ddd;
-    }
-    i{
-    color: #ddd;
-    }
-    .header a:hover {
-      background-color: #ddd;
-      color: black;
-    }   
-
-        .sidenav {
-          height: 100%;
-          width: 0;
-          position: fixed;
-          z-index: 1;
-          top: 0;
-          left: 0;
-          background-color: #111;
-          overflow-x: hidden;
-          transition: 0.5s;
-          padding-top: 60px;
+    <style>
+        .page-header {
+            margin: 30px 0;
         }
         
-        .sidenav a {
-          padding: 8px 8px 8px 32px;
-          text-decoration: none;
-          font-size: 25px;
-          color: #818181;
-          display: block;
-          transition: 0.3s;
+        .page-header h1 {
+            color: var(--text-heading);
+            font-size: 28px;
+            display: flex;
+            align-items: center;
         }
         
-        .sidenav a:hover {
-          color: #f1f1f1;
+        .page-header h1 i {
+            color: var(--primary);
+            margin-right: 12px;
         }
         
-        .sidenav .closebtn {
-          position: absolute;
-          top: 0;
-          right: 25px;
-          font-size: 36px;
-          margin-left: 50px;
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 30px;
+            margin-bottom: 30px;
         }
         
-        @media screen and (max-height: 450px) {
-          .sidenav {padding-top: 15px;}
-          .sidenav a {font-size: 18px;}
+        .text-muted {
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: normal;
+        }
+        
+        small.text-muted {
+            display: block;
+            margin-top: 4px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+            
+            .form-actions .button {
+                width: 100%;
+            }
         }
     </style>
-
-<script>
-    function openNav() {
-      document.getElementById("mySidenav").style.width = "250px";
-    }
-    
-    function closeNav() {
-      document.getElementById("mySidenav").style.width = "0";
-    }
-    </script>
 </body>
 </html>

@@ -1,261 +1,463 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SimpleDiscord - Komut ekle</title>
-    <link rel="stylesheet" href="style.css">
+    <title>SimpleDiscord - <%= data != "false" ? 'Edit Command' : 'Add Command' %></title>
+    <script src="<%=icons%>" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/modern.css">
     <link rel="icon" href="/icons/websiteload.png" type="image/x-icon" />
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "260px";
+            // Show the overlay when menu opens
+            document.getElementById("menuOverlay").style.display = "block";
+        }
+        
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            // Hide the overlay when menu closes
+            document.getElementById("menuOverlay").style.display = "none";
+        }
+    </script>
 </head>
 <body>
-    <div class="wrapper">
+    <header class="header">
+        <button class="menu-toggle" onclick="openNav()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <a href="/" class="logo">SimpleDiscord</a>
+    </header>
+    
+    <!-- Add a div for the menu overlay -->
+    <div id="menuOverlay" class="menu-overlay" onclick="closeNav()"></div>
+    
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="/dashboard"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="/komutekle" class="active"><i class="fa-solid fa-file-code"></i> Add Command</a>
+        <a href="/komutlar"><i class="fa-solid fa-file-lines"></i> Commands</a>
+        <a href="/ayarlar"><i class="fa-solid fa-gears"></i> Settings</a>
+        <a href="/out"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
     </div>
-<div class="header">
-    <a href="/" class="logo">Dangerio Studio</a>
-    <span style="color: white; font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menü</span>
-</div>
-        <body>
-        
-        <div id="mySidenav" class="sidenav">
-          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-          <a href="/dashboard"><i class="fa-solid fa-house"></i> Ana sayfa</a>
-          <a href="/komutekle"><i class="fa-solid fa-file-code"></i> Komut ekle</a>
-          <a href="/komutlar"><i class="fa-solid fa-file-lines"></i> Komutlar</a>
-          <a href="/ayarlar"><i class="fa-solid fa-gears"></i> Ayarlar</a>
-            <a href="/out"><i class="fa-solid fa-right-from-bracket"></i> Çıkış yap</a>
-        </div>   
-        <form action="/komutlarekle" method="post">  <div class="buttons">
-<h2><i class="fa-solid fa-code"></i> Kodun ismi: <input type="text" id="fname" <% if(data != "false") { %>value=<%=data.ismi%> readonly="readonly"<% } %> name="ismi" placeholder="Kodun ismi"></h2>
-<h2><i class="fa-solid fa-circle-nodes"></i> Eylemler</h2>
-<h3><label class="container">Prefix olsunmu<input type="checkbox" <% if(data === "false") {%> checked="checked" <% } %><% if(!data === "false" || data.prefix === true) { %> checked="checked"<% } %> name="prefix" value="true"><span class="checkmark"></span></label></h3>
-<h3><label class="container">Mesaj yanıtlansınmı<input type="checkbox" <% if(data != "false") {%><% if(data.indexjs.includes(`message.reply({`) === true) { %>checked="checked"<% }} %> name="mesajyanıt" value="true"><span class="checkmark"></span></label></h3>
-<h3><label class="container">Mesaj Silinsinmi<input type="checkbox" <% if(data != "false") {%><% if(data.indexjs.includes(`message.delete();`) === true) { %>checked="checked"<% }} %> name="mesajsil" value="true"><span class="checkmark"></span></label></h3>
-<h3><label class="container">Kanal Silinsinmi<input type="checkbox" <% if(data != "false") {%><% if(data.indexjs.includes(`message.channel.delete();`) === true) { %>checked="checked"<% }} %> name="kanalsil" value="true"><span class="checkmark"></span></label></h3>
-
-<h2><i class="fa-solid fa-cube"></i> Embed (zorunlu değil)</h2>
-<h3><i class="fa-solid fa-bars"></i> Embed Rengi</h3>
-
-<label class="container" style="color:white">Siyah<input type="radio" name="embed-renk" <% if(data === "false") {%> checked="checked" <% } %> <% if(data != "false") {%><% if(data.indexjs.includes(`.setColor("`) === false) { %>checked="checked"<% }} %> alue="black" value=""><span class="checkmark"></span></label>
-<label class="container" style="color:white">Beyaz<input type="radio" name="embed-renk" <% if(data != "false") {%><% if(data.indexjs.includes(`.setColor("#ffffff")`) === true) { %>checked="checked"<% }} %> value="#ffffff"><span class="checkmark"></span></label>
-<label class="container" style="color:white">Kırmızı<input type="radio" name="embed-renk" <% if(data != "false") {%><% if(data.indexjs.includes(`.setColor("#ff0000")`) === true) { %>checked="checked"<% }} %> value="#ff0000"><span class="checkmark"></span></label>
-<label class="container" style="color:white">Sarı<input type="radio" name="embed-renk" <% if(data != "false") {%><% if(data.indexjs.includes(`.setColor("#ffff00")`) === true) { %>checked="checked"<% }} %> value="#ffff00"><span class="checkmark"></span></label>
-<label class="container" style="color:white">Yeşil<input type="radio" name="embed-renk" <% if(data != "false") {%><% if(data.indexjs.includes(`.setColor("#008000")`) === true) { %>checked="checked"<% }} %> value="#008000"><span class="checkmark"></span></label>
-
-<a><i class="fa-regular fa-address-card"></i> Resim  </a><input style="width: 25%;" type="text" id="fname" name="embed-resim" <% if(data != "false") {%><% if(data.indexjs.includes(`.setImage("`) === true) { %>value=<%= data.indexjs.split(`.setImage("`)[1].split(`")`)[0] %><% } %><% } %> placeholder="Resmin linki"><br>
-<a><i class="fa-regular fa-address-card"></i> Küçük Resim </a><input style="width: 25%;" type="text" id="fname" name="embed-kücük-resim" <% if(data != "false") {%><% if(data.indexjs.includes(`.setThumbnail("`) === true) { %>value=<%= data.indexjs.split(`.setThumbnail("`)[1].split(`")`)[0] %><% } %><% } %> placeholder="Küçük Resmin linki"><br>
-
-<a><i class="fa-solid fa-a"></i> Başlık </a><input type="text" id="fname" name="embed-başlık" style="width: 25%;"<% if(data != "false") {%><% if(data.indexjs.includes(`.setTitle("`) === true) { %>value=<%= data.indexjs.split("\\n").join("[ALTSATIR]").split(`.setTitle("`)[1].split(`")`)[0] %><% } %><% } %> placeholder="Başlık metni"><br>
-<a><i class="fa-solid fa-notes-medical"></i> Açıklama (Alt satıra gecmek icin [ALTSATIR])</a>
-<input type="text" id="fname" name="embed-aciklama" style="width: 100%;" <% if(data != "false") {%><% if(data.indexjs.includes(`.setDescription("`) === true) { %>value=<%= data.indexjs.split("\\n").join("[ALTSATIR]").split(`.setDescription("`)[1].split(`")]`)[0] %><% } %><% } %> placeholder="Büyük metin">
-
-<h2><i class="fa-solid fa-cube"></i> Mesaj (zorunlu değil)</h2>
-<a><i class="fa-solid fa-notes-medical"></i> Alt satıra gecmek icin [ALTSATIR]</a><br>
-<input type="text" id="fname" name="mesajaga" style="width: 100%;" placeholder="Mesaj"<% if(data != "false") {%><% if(data.indexjs.includes(`content:"`) === true) { %>value=<%= data.indexjs.split("\\n").join("[ALTSATIR]").split(`content:"`)[1].split(`"})`)[0] %><% } %><% } %>>
-<h2><i class="fa-solid fa-bars-staggered"></i> Yazılımsal (zorunlu değil)</h2>
-<a><i class="fa-solid fa-terminal"></i> Modül indirme </a><input type="text" id="fname" name="terminal" style="width: 15%;"placeholder="Modülleri yazın örn(fs ffmpeg)"></a><br>
-<a><i class="fa-solid fa-code-branch"></i> Kod </a><input type="text" id="fname" name="jskodu" style="width: 100%;"<% if(data != "false") {%><% if(data.indexjs.includes(`///javascript`) === true) { %>value=<%= data.indexjs.split(`///javascript`)[1] %><% } %><% } %> placeholder="Js kodu (Boş bırakabilirsiniz)"><br>
-
-<br><br><input type="submit" class="button" style="background-color: #000000;" value="Oluştur">
-</div>
-</form>
-<br>
-<script src="<%=icons%>" crossorigin="anonymous"></script>
-<script>
-  function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
-  }
-  
-  function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-  }
-
-  </script>
-<style>
-    * {box-sizing: border-box;}
-
-    body { 
-      height: 100vh;
-      cursor: url('icons/cursor.png'), auto;
-      background: #181414;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    input[type=text], select {
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-sizing: border-box;
-}
-.container {
-  display: block;
-  position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  font-size: 22px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
-
-.checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 25px;
-  width: 25px;
-  background-color: #eee;
-}
-
-.container:hover input ~ .checkmark {
-  background-color: #ccc;
-}
-
-.container input:checked ~ .checkmark {
-  background-color: #2196F3;
-}
-
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
-
-.container input:checked ~ .checkmark:after {
-  display: block;
-}
-
-.container .checkmark:after {
-  left: 9px;
-  top: 5px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-
-   .center {
-    font-size:25px;
-    text-align: center;
-    border-radius:15px;
-    border: 3px solid rgb(56, 57, 56);
-   }
-
-   .border {
-    border: 3px solid rgb(56, 57, 56);
-   }
-    .header {
-      overflow: hidden;
-      background-color: #282424;
-      padding: 20px 10px;
-    }
     
-    .header a {
-      float: left;
-      color: #ddd;
-      text-align: center;
-      padding: 12px;
-      text-decoration: none;
-      font-size: 18px; 
-      line-height: 25px;
-      border-radius: 4px;
-    }
+    <div class="wrapper">
+        <div class="page-header">
+            <h1>
+                <i class="fa-solid <%= data != "false" ? 'fa-pen-to-square' : 'fa-plus' %>"></i>
+                <%= data != "false" ? 'Edit Command: ' + data.ismi : 'Add New Command' %>
+            </h1>
+        </div>
+        
+        <form action="/komutlarekle" method="post" class="modern-form">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-info-circle"></i> Basic Information</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="fname">Command Name</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-code"></i>
+                            <input 
+                                type="text" 
+                                id="fname" 
+                                name="ismi" 
+                                placeholder="Enter command name"
+                                <% if(data != "false") { %>
+                                    value="<%=data.ismi%>" 
+                                    readonly="readonly"
+                                <% } %>
+                                required
+                            >
+                        </div>
+                    </div>
+                    
+                    <div class="switch-container">
+                        <label class="switch">
+                            <input 
+                                type="checkbox"
+                                name="prefix" 
+                                value="true"
+                                <% if(data === "false") {%> checked="checked" <% } %>
+                                <% if(!data === "false" || data.prefix === true) { %> checked="checked"<% } %>
+                            >
+                            <span class="slider"></span>
+                        </label>
+                        <label>Use prefix</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-circle-nodes"></i> Actions</h3>
+                </div>
+                <div class="card-body">
+                    <div class="action-options">
+                        <div class="switch-container">
+                            <label class="switch">
+                                <input 
+                                    type="checkbox"
+                                    name="mesajyanıt" 
+                                    value="true"
+                                    <% if(data != "false") {%>
+                                        <% if(data.indexjs.includes(`message.reply({`) === true) { %>
+                                            checked="checked"
+                                        <% } %>
+                                    <% } %>
+                                >
+                                <span class="slider"></span>
+                            </label>
+                            <label>Reply to message</label>
+                        </div>
+                        
+                        <div class="switch-container">
+                            <label class="switch">
+                                <input 
+                                    type="checkbox"
+                                    name="mesajsil" 
+                                    value="true"
+                                    <% if(data != "false") {%>
+                                        <% if(data.indexjs.includes(`message.delete();`) === true) { %>
+                                            checked="checked"
+                                        <% } %>
+                                    <% } %>
+                                >
+                                <span class="slider"></span>
+                            </label>
+                            <label>Delete message</label>
+                        </div>
+                        
+                        <div class="switch-container">
+                            <label class="switch warning-switch">
+                                <input 
+                                    type="checkbox"
+                                    name="kanalsil" 
+                                    value="true"
+                                    <% if(data != "false") {%>
+                                        <% if(data.indexjs.includes(`message.channel.delete();`) === true) { %>
+                                            checked="checked"
+                                        <% } %>
+                                    <% } %>
+                                >
+                                <span class="slider warning"></span>
+                            </label>
+                            <label>Delete channel <span class="warning-text">(Use with caution)</span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-cube"></i> Embed (optional)</h3>
+                </div>
+                <div class="card-body">
+                    <h4>Embed Color</h4>
+                    <div class="color-options">
+                        <div class="radio-container">
+                            <input 
+                                type="radio" 
+                                id="color-black" 
+                                name="embed-renk" 
+                                value=""
+                                <% if(data === "false") {%> checked="checked" <% } %> 
+                                <% if(data != "false") {%>
+                                    <% if(data.indexjs.includes(`.setColor("`) === false) { %>
+                                        checked="checked"
+                                    <% } %>
+                                <% } %>
+                            >
+                            <label for="color-black">
+                                <span class="radio-checkmark"></span>
+                                <span class="color-preview black"></span>
+                                Black
+                            </label>
+                        </div>
+                        
+                        <div class="radio-container">
+                            <input 
+                                type="radio" 
+                                id="color-white" 
+                                name="embed-renk" 
+                                value="#ffffff"
+                                <% if(data != "false") {%>
+                                    <% if(data.indexjs.includes(`.setColor("#ffffff")`) === true) { %>
+                                        checked="checked"
+                                    <% } %>
+                                <% } %>
+                            >
+                            <label for="color-white">
+                                <span class="radio-checkmark"></span>
+                                <span class="color-preview white"></span>
+                                White
+                            </label>
+                        </div>
+                        
+                        <div class="radio-container">
+                            <input 
+                                type="radio" 
+                                id="color-red" 
+                                name="embed-renk" 
+                                value="#ff0000"
+                                <% if(data != "false") {%>
+                                    <% if(data.indexjs.includes(`.setColor("#ff0000")`) === true) { %>
+                                        checked="checked"
+                                    <% } %>
+                                <% } %>
+                            >
+                            <label for="color-red">
+                                <span class="radio-checkmark"></span>
+                                <span class="color-preview red"></span>
+                                Red
+                            </label>
+                        </div>
+                        
+                        <div class="radio-container">
+                            <input 
+                                type="radio" 
+                                id="color-yellow" 
+                                name="embed-renk" 
+                                value="#ffff00"
+                                <% if(data != "false") {%>
+                                    <% if(data.indexjs.includes(`.setColor("#ffff00")`) === true) { %>
+                                        checked="checked"
+                                    <% } %>
+                                <% } %>
+                            >
+                            <label for="color-yellow">
+                                <span class="radio-checkmark"></span>
+                                <span class="color-preview yellow"></span>
+                                Yellow
+                            </label>
+                        </div>
+                        
+                        <div class="radio-container">
+                            <input 
+                                type="radio" 
+                                id="color-green" 
+                                name="embed-renk" 
+                                value="#008000"
+                                <% if(data != "false") {%>
+                                    <% if(data.indexjs.includes(`.setColor("#008000")`) === true) { %>
+                                        checked="checked"
+                                    <% } %>
+                                <% } %>
+                            >
+                            <label for="color-green">
+                                <span class="radio-checkmark"></span>
+                                <span class="color-preview green"></span>
+                                Green
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <i class="fa-regular fa-address-card"></i> 
+                            Image URL
+                        </label>
+                        <input 
+                            type="text" 
+                            name="embed-resim" 
+                            placeholder="Enter image URL (e.g., https://example.com/image.png)"
+                            <% if(data != "false") {%>
+                                <% if(data.indexjs.includes(`.setImage("`) === true) { %>
+                                    value="<%= data.indexjs.split(`.setImage("`)[1].split(`")`)[0] %>"
+                                <% } %>
+                            <% } %>
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <i class="fa-regular fa-address-card"></i> 
+                            Thumbnail URL
+                        </label>
+                        <input 
+                            type="text" 
+                            name="embed-kücük-resim" 
+                            placeholder="Enter thumbnail URL"
+                            <% if(data != "false") {%>
+                                <% if(data.indexjs.includes(`.setThumbnail("`) === true) { %>
+                                    value="<%= data.indexjs.split(`.setThumbnail("`)[1].split(`")`)[0] %>"
+                                <% } %>
+                            <% } %>
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <i class="fa-solid fa-heading"></i> 
+                            Embed Title
+                        </label>
+                        <input 
+                            type="text" 
+                            name="embed-başlık" 
+                            placeholder="Enter title text"
+                            <% if(data != "false") {%>
+                                <% if(data.indexjs.includes(`.setTitle("`) === true) { %>
+                                    value="<%= data.indexjs.split("\\n").join("[ALTSATIR]").split(`.setTitle("`)[1].split(`")`)[0] %>"
+                                <% } %>
+                            <% } %>
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <i class="fa-solid fa-align-left"></i> 
+                            Embed Description <span class="text-muted">(Use [ALTSATIR] for new lines)</span>
+                        </label>
+                        <textarea 
+                            name="embed-aciklama" 
+                            rows="4" 
+                            placeholder="Enter longer description text"
+                        ><% if(data != "false") {%><% if(data.indexjs.includes(`.setDescription("`) === true) { %><%= data.indexjs.split("\\n").join("[ALTSATIR]").split(`.setDescription("`)[1].split(`")]`)[0] %><% } %><% } %></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-message"></i> Message (optional)</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>
+                            <i class="fa-solid fa-text-height"></i> 
+                            Message Content <span class="text-muted">(Use [ALTSATIR] for new lines)</span>
+                        </label>
+                        <textarea 
+                            name="mesajaga" 
+                            rows="3" 
+                            placeholder="Enter message text"
+                        ><% if(data != "false") {%><% if(data.indexjs.includes(`content:"`) === true) { %><%= data.indexjs.split("\\n").join("[ALTSATIR]").split(`content:"`)[1].split(`"})`)[0] %><% } %><% } %></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-code"></i> Development (optional)</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>
+                            <i class="fa-solid fa-terminal"></i> 
+                            Install Modules
+                        </label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-box"></i>
+                            <input 
+                                type="text" 
+                                name="terminal" 
+                                placeholder="Enter modules to install (e.g., fs ffmpeg)"
+                            >
+                        </div>
+                        <small class="text-muted">Separate module names with spaces</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <i class="fa-solid fa-code-branch"></i> 
+                            Custom JavaScript
+                        </label>
+                        <textarea 
+                            name="jskodu" 
+                            rows="8" 
+                            class="code-editor" 
+                            placeholder="Enter custom JavaScript code (can be empty)"
+                        ><% if(data != "false") {%><% if(data.indexjs.includes(`///javascript`) === true) { %><%= data.indexjs.split(`///javascript`)[1] %><% } %><% } %></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="button" onclick="location.href='/komutlar'">Cancel</button>
+                <button type="submit" class="button button-success">
+                    <i class="fa-solid <%= data != "false" ? 'fa-save' : 'fa-plus' %>"></i>
+                    <%= data != "false" ? 'Save Changes' : 'Create Command' %>
+                </button>
+            </div>
+        </form>
+    </div>
     
-    .header a.logo {
-        float: right;
-      font-size: 25px;
-      font-weight: bold;
-    }
-  .buttons .button{
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 12%;
-  }
-    h1{
-    color: #ddd;
-    }
-    h2{
-    color: #ddd;
-    }
-    h3{
-    color: #ddd;
-    }
-    h4{
-    color: #ddd;
-    }
-    a{
-    color: #ddd;
-    }
-    p{
-    color: #ddd;
-    }
-    i{
-    color: #ddd;
-    }
-    .header a:hover {
-      background-color: #ddd;
-      color: black;
-    }   
-
-        .sidenav {
-          height: 100%;
-          width: 0;
-          position: fixed;
-          z-index: 1;
-          top: 0;
-          left: 0;
-          background-color: #111;
-          overflow-x: hidden;
-          transition: 0.5s;
-          padding-top: 60px;
+    <style>
+        .page-header {
+            margin: 30px 0;
         }
         
-        .sidenav a {
-          padding: 8px 8px 8px 32px;
-          text-decoration: none;
-          font-size: 25px;
-          color: #818181;
-          display: block;
-          transition: 0.3s;
+        .page-header h1 {
+            color: var(--text-heading);
+            font-size: 28px;
+            display: flex;
+            align-items: center;
         }
         
-        .sidenav a:hover {
-          color: #f1f1f1;
+        .page-header h1 i {
+            color: var(--accent);
+            margin-right: 12px;
         }
         
-        .sidenav .closebtn {
-          position: absolute;
-          top: 0;
-          right: 25px;
-          font-size: 36px;
-          margin-left: 50px;
+        .modern-form h4 {
+            color: var(--text-normal);
+            margin-bottom: 16px;
+            font-size: 16px;
+            font-weight: 500;
         }
         
-        @media screen and (max-height: 450px) {
-          .sidenav {padding-top: 15px;}
-          .sidenav a {font-size: 18px;}
+        .action-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .text-muted {
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: normal;
+            margin-left: 8px;
+        }
+        
+        small.text-muted {
+            display: block;
+            margin-top: 4px;
+            margin-left: 0;
+        }
+        
+        .code-editor {
+            font-family: 'Fira Code', 'Courier New', monospace;
+            background-color: var(--background-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-normal);
+            border-radius: var(--border-radius);
+            padding: 12px 16px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .action-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+            
+            .form-actions .button {
+                width: 100%;
+            }
         }
     </style>
 </body>

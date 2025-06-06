@@ -1,199 +1,455 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SimpleDiscord - Komutlar</title>
-    <link rel="stylesheet" href="style.css">
+    <title>SimpleDiscord - Commands</title>
+    <script src="<%=icons%>" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/modern.css">
     <link rel="icon" href="/icons/websiteload.png" type="image/x-icon" />
 </head>
 <body>
+    <header class="header">
+        <button class="menu-toggle" onclick="openNav()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <a href="/" class="logo">SimpleDiscord</a>
+    </header>
+    
+    <!-- Add a div for the menu overlay -->
+    <div id="menuOverlay" class="menu-overlay" onclick="closeNav()"></div>
+    
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="/dashboard"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="/komutekle"><i class="fa-solid fa-file-code"></i> Add Command</a>
+        <a href="/komutlar" class="active"><i class="fa-solid fa-file-lines"></i> Commands</a>
+        <a href="/ayarlar"><i class="fa-solid fa-gears"></i> Settings</a>
+        <a href="/out"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </div>
+    
     <div class="wrapper">
-    </div>
-<div class="header">
-    <a href="/" class="logo">Dangerio Studio</a>
-    <span style="color: white; font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menü</span>
-</div>
-        <body>
+        <div class="page-header">
+            <h1><i class="fa-solid fa-code"></i> Commands</h1>
+            <button onclick="location.href='/komutekle'" class="button button-success">
+                <i class="fa-solid fa-plus"></i> Add Command
+            </button>
+        </div>
         
-        <div id="mySidenav" class="sidenav">
-          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-          <a href="/dashboard"><i class="fa-solid fa-house"></i> Ana sayfa</a>
-          <a href="/komutekle"><i class="fa-solid fa-file-code"></i> Komut ekle</a>
-          <a href="/komutlar"><i class="fa-solid fa-file-lines"></i> Komutlar</a>
-          <a href="/ayarlar"><i class="fa-solid fa-gears"></i> Ayarlar</a>
-            <a href="/out"><i class="fa-solid fa-right-from-bracket"></i> Çıkış yap</a>
-        </div>  
-
-<h2><i class="fa-solid fa-code"></i> Komutlar</h2>
-<div class="row">
-    <%
-    for(let i = 0; i < komutlardb.get("komutlar").length; i++) {
-    let komut = komutlardb.get("komutlar")[i];
-  %>      
-  <div class="column">
-    <div class="card">
-      <h3><%= komut.ismi%></h3>
-      <p><i class="fa-solid fa-clock-rotate-left"></i> Tarih: <%= moment.duration(Date.now()-komut.tarih).format(" D [gün], H [saat], m [dakika], s [saniye]")%></p>
-      <a href="/komutduzenle/<%= komut.ismi %>" style="text-decoration: none"><i class="fa-solid fa-pen-to-square"></i> Düzenle</a><p></p>
-      <a href="/deletecommand/<%= komut.ismi %>" style="text-decoration: none"><i class="fa-solid fa-ban"></i> Sil</a><p></p>
+        <div class="search-container">
+            <div class="search-input">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchCommand" placeholder="Search commands..." onkeyup="searchCommands()">
+            </div>
+        </div>
+        
+        <div class="commands-grid" id="commandsContainer">
+            <% if (komutlardb.get("komutlar").length === 0) { %>
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h3>No Commands Yet</h3>
+                    <p>Start by creating your first command!</p>
+                    <button onclick="location.href='/komutekle'" class="button">
+                        <i class="fa-solid fa-plus"></i> Add Command
+                    </button>
+                </div>
+            <% } else { %>
+                <% for(let i = 0; i < komutlardb.get("komutlar").length; i++) {
+                    let komut = komutlardb.get("komutlar")[i]; %>
+                    <div class="command-card" data-name="<%= komut.ismi.toLowerCase() %>">
+                        <div class="command-header">
+                            <h3><%= komut.ismi %></h3>
+                            <div class="command-badge <%= komut.prefix ? 'prefix' : 'no-prefix' %>">
+                                <%= komut.prefix ? 'Prefix' : 'No Prefix' %>
+                            </div>
+                        </div>
+                        
+                        <div class="command-info">
+                            <div class="info-item">
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                                <span><%= moment.duration(Date.now()-komut.tarih).format(" D [day], H [hour], m [minute]") %></span>
+                            </div>
+                        </div>
+                        
+                        <div class="command-actions">
+                            <a href="/komutduzenle/<%= komut.ismi %>" class="action-button edit">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                            </a>
+                            <a href="#" class="action-button delete" data-command="<%= komut.ismi %>" onclick="confirmDelete(this)">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </a>
+                        </div>
+                    </div>
+                <% } %>
+            <% } %>
+        </div>
+        
+        <div id="confirmationModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Confirm Deletion</h3>
+                    <span class="close-modal" onclick="closeModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this command? This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="button" onclick="closeModal()">Cancel</button>
+                    <button class="button button-danger" id="confirmDeleteBtn">Delete</button>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-    <% } %>
-</div>
-<br>    
-<br><div class="buttons">
-<button onclick="location.href='/komutekle'" class="button" style="background-color: #000000;"><i class="fa-solid fa-plus"></i><a style="color:#ffffff;"> Komut ekle</a></button>
-</div>
-<script src="<%=icons%>" crossorigin="anonymous"></script>
-<style>
-    * {box-sizing: border-box;}
-
-    body {
-      height: 100vh;
-      cursor: url('icons/cursor.png'), auto;
-      background: #181414;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-@keyframes animasyonAdi {
-  10%, 90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-  
-  20%, 80% {
-    transform: translate3d(2px, 0, 0);
-  }
-
-  30%, 50%, 70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-
-  40%, 60% {
-    transform: translate3d(4px, 0, 0);
-  }
-}
-    .header {
-      overflow: hidden;
-      background-color: #282424;
-      padding: 20px 10px;
-    }
-    .header a {
-      float: left;
-      color: #ddd;
-      text-align: center;
-      padding: 12px;
-      text-decoration: none;
-      font-size: 18px; 
-      line-height: 25px;
-      border-radius: 4px;
-    }
     
-    .header a.logo {
-        float: right;
-      font-size: 25px;
-      font-weight: bold;
-    }
-  .buttons .button{
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 12%;
-  }
-    h1{
-    color: #ddd;
-    }
-    h2{
-    color: #ddd;
-    }
-    h3{
-    color: #ddd;
-    }
-    h4{
-    color: #ddd;
-    }
-    a{
-    color: #ddd;
-    }
-    p{
-    color: #ddd;
-    }
-    i{
-    color: #ddd;
-    }
-    .header a:hover {
-      background-color: #ddd;
-      color: black;
-    }   
-
-        .sidenav {
-          height: 100%;
-          width: 0;
-          position: fixed;
-          z-index: 1;
-          top: 0;
-          left: 0;
-          background-color: #111;
-          overflow-x: hidden;
-          transition: 0.5s;
-          padding-top: 60px;
+    <style>
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
         }
         
-        .sidenav a {
-          padding: 8px 8px 8px 32px;
-          text-decoration: none;
-          font-size: 25px;
-          color: #818181;
-          display: block;
-          transition: 0.3s;
+        .page-header h1 {
+            color: var(--text-heading);
+            margin: 0;
+            display: flex;
+            align-items: center;
         }
         
-        .sidenav a:hover {
-          color: #f1f1f1;
+        .page-header h1 i {
+            color: var(--primary);
+            margin-right: 10px;
         }
         
-        .sidenav .closebtn {
-          position: absolute;
-          top: 0;
-          right: 25px;
-          font-size: 36px;
-          margin-left: 50px;
+        .search-container {
+            margin-bottom: 24px;
         }
         
-        @media screen and (max-height: 450px) {
-          .sidenav {padding-top: 15px;}
-          .sidenav a {font-size: 18px;}
+        .search-input {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
         }
-.column {
-  float: left;
-  width: 23%;
-  padding: 16px;
-}
-
-.card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  padding: 1px;
-  border-radius:20px;
-  text-align: center;
-  background-color: #393939;
-}
+        
+        .search-input i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        
+        .search-input input {
+            width: 100%;
+            padding-left: 40px;
+            background-color: var(--background-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-normal);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            height: 45px;
+            transition: var(--transition-default);
+        }
+        
+        .search-input input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(114, 137, 218, 0.25);
+        }
+        
+        .commands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .command-card {
+            background: linear-gradient(to bottom, var(--background-secondary), var(--background-tertiary));
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow-medium);
+            transition: var(--transition-default);
+            animation: fadeIn 0.6s ease;
+        }
+        
+        .command-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-large);
+        }
+        
+        .command-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .command-header h3 {
+            margin: 0;
+            color: var(--text-heading);
+            font-size: 18px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .command-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .command-badge.prefix {
+            background-color: rgba(114, 137, 218, 0.2);
+            color: var(--primary);
+        }
+        
+        .command-badge.no-prefix {
+            background-color: rgba(67, 181, 129, 0.2);
+            color: var(--accent);
+        }
+        
+        .command-info {
+            margin-bottom: 15px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .info-item i {
+            margin-right: 8px;
+            color: var(--primary);
+        }
+        
+        .command-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-button {
+            flex: 1;
+            padding: 8px 0;
+            border-radius: var(--border-radius);
+            text-align: center;
+            font-weight: 500;
+            font-size: 14px;
+            transition: var(--transition-default);
+            text-decoration: none;
+        }
+        
+        .action-button.edit {
+            background-color: rgba(114, 137, 218, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(114, 137, 218, 0.3);
+        }
+        
+        .action-button.edit:hover {
+            background-color: rgba(114, 137, 218, 0.2);
+        }
+        
+        .action-button.delete {
+            background-color: rgba(240, 71, 71, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(240, 71, 71, 0.3);
+        }
+        
+        .action-button.delete:hover {
+            background-color: rgba(240, 71, 71, 0.2);
+        }
+        
+        .empty-state {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            text-align: center;
+            background-color: var(--background-secondary);
+            border-radius: var(--border-radius);
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+        }
+        
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .empty-state h3 {
+            margin: 0;
+            margin-bottom: 8px;
+            color: var(--text-heading);
+        }
+        
+        .empty-state p {
+            margin: 0;
+            margin-bottom: 24px;
+            color: var(--text-muted);
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px);
+        }
+        
+        .modal-content {
+            background-color: var(--background-tertiary);
+            margin: 15% auto;
+            border-radius: var(--border-radius);
+            max-width: 500px;
+            box-shadow: var(--shadow-large);
+            animation: modalSlideIn 0.3s ease;
+        }
+        
+        .modal-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: var(--text-heading);
+        }
+        
+        .close-modal {
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition-default);
+        }
+        
+        .close-modal:hover {
+            color: var(--danger);
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes modalSlideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @media (max-width: 480px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .page-header button {
+                margin-top: 16px;
+                width: 100%;
+            }
+            
+            .commands-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Menu overlay styles */
+        .menu-overlay {
+            display: none;
+            position: fixed;
+            z-index: 900;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
     </style>
-
-<script>
-    function openNav() {
-      document.getElementById("mySidenav").style.width = "250px";
-    }
     
-    function closeNav() {
-      document.getElementById("mySidenav").style.width = "0";
-    }
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "260px";
+            // Show the overlay when menu opens
+            document.getElementById("menuOverlay").style.display = "block";
+        }
+        
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            // Hide the overlay when menu closes
+            document.getElementById("menuOverlay").style.display = "none";
+        }
+        
+        // Search functionality
+        function searchCommands() {
+            const input = document.getElementById('searchCommand');
+            const filter = input.value.toLowerCase();
+            const cards = document.querySelectorAll('.command-card');
+            
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name');
+                if (name.includes(filter)) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+        
+        // Delete confirmation
+        function confirmDelete(element) {
+            event.preventDefault();
+            const commandName = element.getAttribute('data-command');
+            const modal = document.getElementById('confirmationModal');
+            const confirmBtn = document.getElementById('confirmDeleteBtn');
+            
+            modal.style.display = "block";
+            confirmBtn.onclick = function() {
+                window.location.href = `/deletecommand/${commandName}`;
+            };
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('confirmationModal');
+            modal.style.display = "none";
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('confirmationModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
     </script>
 </body>
 </html>
