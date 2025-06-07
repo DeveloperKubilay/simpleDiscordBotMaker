@@ -1,9 +1,3 @@
-/**
- * Version: 1.0.1
- * Settings added protection strengthened
- * Developed by kubi
- */
-
 // Modules
 const express = require("express"),
     bodyParser = require("body-parser"),
